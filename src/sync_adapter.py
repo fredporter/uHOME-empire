@@ -71,7 +71,12 @@ def attach_transport_targets(plan: dict, wizard_url: str) -> dict:
         if channel["transport"] == "wizard-provider":
             task = quote(channel["channel"])
             targets.append({"name": "orchestration_status", "url": f"{wizard_url}/orchestration/status"})
-            targets.append({"name": "assist_route", "url": f"{wizard_url}/assist?task={task}&mode=auto"})
+            targets.append(
+                {
+                    "name": "orchestration_dispatch",
+                    "url": f"{wizard_url}/orchestration/dispatch?task={task}&mode=auto&surface=sync",
+                }
+            )
         elif channel["transport"] == "webhook":
             targets.append({"name": "contract_only", "url": "local-contract:webhook"})
 
@@ -177,7 +182,7 @@ def build_sync_execution_brief(plan: dict, probe_key: str = "transport_probe") -
         channel_name = channel["channel"]
         channel_probes = probe_map.get(channel_name, {})
         orchestration = channel_probes.get("orchestration_status", {}).get("payload", {})
-        assist = channel_probes.get("assist_route", {}).get("payload", {})
+        dispatch = channel_probes.get("orchestration_dispatch", {}).get("payload", {})
         transport = channel["transport"]
 
         if transport == "webhook":
@@ -195,24 +200,25 @@ def build_sync_execution_brief(plan: dict, probe_key: str = "transport_probe") -
         providers = orchestration.get("providers", [])
         runtime_services = {item["key"] for item in orchestration.get("runtime_services", [])}
         recommended_action = "queue_sync_assist"
-        if assist.get("provider") == "local-fallback":
+        if dispatch.get("provider") == "local-fallback":
             recommended_action = "fallback_local_review"
 
         brief = {
             "channel": channel_name,
             "transport": transport,
             "recommended_action": recommended_action,
-            "provider": assist.get("provider", "unknown"),
-            "executor": assist.get("executor", "unknown"),
-            "status": assist.get("status", "unknown"),
+            "provider": dispatch.get("provider", "unknown"),
+            "executor": dispatch.get("executor", "unknown"),
+            "status": dispatch.get("status", "unknown"),
             "available_providers": providers,
             "runtime_services": sorted(runtime_services),
         }
         if recommended_action == "queue_sync_assist":
             brief["dispatch_request"] = {
-                "target": "assist_route",
+                "target": "orchestration_dispatch",
                 "task": channel_name,
-                "mode": assist.get("mode", "auto"),
+                "mode": dispatch.get("mode", "auto"),
+                "surface": dispatch.get("surface", "sync"),
             }
         briefs.append(brief)
 

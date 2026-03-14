@@ -29,7 +29,7 @@ class ContractAssetTests(unittest.TestCase):
         targets = enriched["channels"][0]["transport_targets"]
         target_names = [target["name"] for target in targets]
         self.assertIn("orchestration_status", target_names)
-        self.assertIn("assist_route", target_names)
+        self.assertIn("orchestration_dispatch", target_names)
 
     def test_sync_adapter_probes_transport_targets_with_stub_fetcher(self) -> None:
         plan = build_sync_plan(REPO_ROOT, channel_name="webhook-automation")
@@ -108,7 +108,8 @@ class ContractAssetTests(unittest.TestCase):
         brief = briefed["sync_execution_brief"][0]
         self.assertEqual(brief["channel"], "google-workspace-mirror")
         self.assertEqual(brief["recommended_action"], "queue_sync_assist")
-        self.assertEqual(brief["dispatch_request"]["target"], "assist_route")
+        self.assertEqual(brief["dispatch_request"]["target"], "orchestration_dispatch")
+        self.assertEqual(brief["dispatch_request"]["surface"], "sync")
 
 
 if __name__ == "__main__":
