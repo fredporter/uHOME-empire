@@ -1,0 +1,37 @@
+{
+  "version": "v2.0.1",
+  "owner": "uHOME-empire",
+  "source_of_truth": "vault",
+  "channels": [
+    {
+      "channel": "google-workspace-mirror",
+      "transport": "wizard-provider",
+      "upstream_owner": "omd-mac-osx-app",
+      "capabilities": [
+        "contact.project",
+        "task.project",
+        "note.mirror"
+      ]
+    },
+    {
+      "channel": "hubspot-sync",
+      "transport": "wizard-provider",
+      "upstream_owner": "omd-mac-osx-app",
+      "capabilities": [
+        "contact.project",
+        "company.project",
+        "lead.enrich"
+      ]
+    },
+    {
+      "channel": "webhook-automation",
+      "transport": "webhook",
+      "upstream_owner": "uHOME-empire",
+      "capabilities": [
+        "job.trigger",
+        "event.receive",
+        "content.publish"
+      ]
+    }
+  ]
+}

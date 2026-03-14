@@ -20,8 +20,10 @@ require_file "$REPO_ROOT/docs/boundary.md"
 require_file "$REPO_ROOT/docs/getting-started.md"
 require_file "$REPO_ROOT/docs/examples.md"
 require_file "$REPO_ROOT/docs/activation.md"
+require_file "$REPO_ROOT/docs/v2.0.1-sync-alignment.md"
 require_file "$REPO_ROOT/src/README.md"
 require_file "$REPO_ROOT/src/workflow-pattern.json"
+require_file "$REPO_ROOT/src/sync-contract.json"
 require_file "$REPO_ROOT/src/webhooks/README.md"
 require_file "$REPO_ROOT/src/webhooks/connection-template.json"
 require_file "$REPO_ROOT/src/webhooks/google-sync-template.json"
@@ -43,6 +45,7 @@ from pathlib import Path
 
 repo_root = Path(".").resolve()
 source = json.loads((repo_root / "src" / "workflow-pattern.json").read_text(encoding="utf-8"))
+sync_contract = json.loads((repo_root / "src" / "sync-contract.json").read_text(encoding="utf-8"))
 example = json.loads((repo_root / "examples" / "basic-empire-flow.json").read_text(encoding="utf-8"))
 webhook_server = json.loads((repo_root / "src" / "webhooks" / "webhook-server-template.json").read_text(encoding="utf-8"))
 connection_template = json.loads((repo_root / "src" / "webhooks" / "connection-template.json").read_text(encoding="utf-8"))
@@ -60,6 +63,19 @@ for name, payload in {"src/workflow-pattern.json": source, "examples/basic-empir
         raise SystemExit(f"{name} missing required fields: {missing}")
     if not isinstance(payload["capabilities"], list) or not all(isinstance(item, str) for item in payload["capabilities"]):
         raise SystemExit(f"{name} capabilities must be a list of strings")
+
+if sync_contract.get("version") != "v2.0.1":
+    raise SystemExit("src/sync-contract.json version must be v2.0.1")
+if sync_contract.get("source_of_truth") != "vault":
+    raise SystemExit("src/sync-contract.json source_of_truth must be 'vault'")
+channels = sync_contract.get("channels")
+if not isinstance(channels, list) or not channels:
+    raise SystemExit("src/sync-contract.json channels must be a non-empty array")
+for channel in channels:
+    if not {"channel", "transport", "upstream_owner", "capabilities"} <= channel.keys():
+        raise SystemExit(f"sync channel missing required fields: {channel}")
+    if not isinstance(channel["capabilities"], list) or not all(isinstance(item, str) for item in channel["capabilities"]):
+        raise SystemExit("sync channel capabilities must be a list of strings")
 
 webhook_required = {"service", "trigger", "source_of_truth", "inbound", "outbound", "auth", "operations"}
 for name, payload in {

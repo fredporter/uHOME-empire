@@ -46,6 +46,8 @@ and leaves Apple-native sync to the private macOS app.
 ## Activation
 
 The v2 repo activation path is documented in `docs/activation.md`.
+The `v2.0.1` sync alignment is documented in
+`docs/v2.0.1-sync-alignment.md`.
 
 Run the current repo validation entrypoint with:
 

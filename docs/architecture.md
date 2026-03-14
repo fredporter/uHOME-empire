@@ -17,6 +17,7 @@ Key companion docs:
 - `docs/webhook-automation-runbook.md`
 - `docs/provider-lane-status.md`
 - `docs/provider-template-patterns.md`
+- `docs/v2.0.1-sync-alignment.md`
 
 ## Integration Lane
 
@@ -38,6 +39,8 @@ online services that should stay outside the base `uHOME-server` runtime:
   pathways, including the user and binder contact databases.
 - `uDOS-wizard` owns online networking and provider bridge contracts used by
   empire when work leaves the local network.
+- `uDOS-shell` supplies shared shell interaction language when empire workflows
+  are presented through public operator surfaces.
 
 ## Legacy Inputs
 
