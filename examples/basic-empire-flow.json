@@ -1,0 +1,9 @@
+{
+  "pattern": "public-crm-review",
+  "owner": "udos-empire",
+  "mode": "reviewed",
+  "capabilities": [
+    "lead.track",
+    "campaign.review"
+  ]
+}
