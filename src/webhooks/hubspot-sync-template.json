@@ -1,0 +1,13 @@
+{
+  "service": "hubspot",
+  "transport": "http",
+  "auth": "private-app-token",
+  "base_url": "https://api.hubapi.com",
+  "operations": [
+    "contacts.sync",
+    "tasks.sync",
+    "notes.sync",
+    "webhooks.receive"
+  ],
+  "notes": "Scaffold for HubSpot sync using app-owned contact records as upstream truth."
+}

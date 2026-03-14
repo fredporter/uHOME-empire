@@ -1,20 +1,26 @@
-# uDOS-empire
+# uHOME-empire
 
 ## Purpose
 
-Optional public business, CRM, and publishing patterns repo for the uDOS family.
+Linux-based uHOME extension for always-on vault sync, Google workspace mirrors,
+HubSpot sync, and console-style workflow or CRM operations.
 
 ## Ownership
 
-- public business workflow patterns
-- CRM and publishing examples
-- teachable operational modules
+- local-network vault sync orchestration for configured user vaults
+- always-on Google Docs mirror sync and Google Keep or Tasks projection
+- HubSpot contact and task sync using app-owned user or binder contact records
+  plus locally collated enrichment
+- cron-type webhook triggers and configurable outbound API call jobs
+- reusable templates for custom online API and webhook connections
+- console-style task, workflow, contacts, and CRM surfaces
 
 ## Non-Goals
 
-- private OMD product logic
-- core runtime ownership
-- provider control-plane ownership
+- Apple, iCloud, AppleScript, and native macOS sync ownership
+- canonical runtime semantics owned by `uDOS-core`
+- network control-plane ownership owned by `uDOS-wizard`
+- base Linux host runtime ownership owned by `uHOME-server`
 
 ## Spine
 
@@ -27,11 +33,15 @@ Optional public business, CRM, and publishing patterns repo for the uDOS family.
 
 ## Local Development
 
-Keep public patterns modular and reusable without coupling to private apps.
+Keep vault-first sync contracts modular and reusable. Treat Google and HubSpot
+as mirrors or projection targets rather than the canonical source of truth, and
+use the macOS app's contact records as the upstream source for HubSpot sync.
 
 ## Family Relation
 
-Empire can reference public contracts but must remain separate from OMD-specific implementation.
+`uHOME-empire` sits between local `uHOME` infrastructure and remote services.
+It uses `uDOS-core` semantics, relies on `uDOS-wizard` for online networking,
+and leaves Apple-native sync to the private macOS app.
 
 ## Activation
 

@@ -1,0 +1,26 @@
+{
+  "service": "configurable-webhook-server",
+  "trigger": {
+    "mode": "cron",
+    "schedule": "*/15 * * * *"
+  },
+  "source_of_truth": "vault",
+  "inbound": {
+    "enabled": true,
+    "path": "/hooks/custom-service",
+    "verification": "shared-secret"
+  },
+  "outbound": {
+    "enabled": true,
+    "connection": "custom-api",
+    "operation": "push.records"
+  },
+  "auth": {
+    "secret_ref": "env:UHOME_EMPIRE_WEBHOOK_SECRET"
+  },
+  "operations": [
+    "receive.events",
+    "pull.remote-updates",
+    "push.vault-derived-records"
+  ]
+}

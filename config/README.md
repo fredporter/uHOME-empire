@@ -1,6 +1,6 @@
 # Config
 
-`config/` is the checked-in configuration lane for `uDOS-empire`.
+`config/` is the checked-in configuration lane for `uHOME-empire`.
 
 Current state:
 
@@ -9,5 +9,5 @@ Current state:
 
 Planned use of this root:
 
-- public workflow defaults
-- publishing and CRM configuration examples
+- sync workflow defaults
+- Google and HubSpot configuration examples

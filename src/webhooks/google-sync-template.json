@@ -1,0 +1,13 @@
+{
+  "service": "google-workspace",
+  "transport": "http",
+  "auth": "oauth2",
+  "base_url": "https://www.googleapis.com",
+  "operations": [
+    "docs.mirror",
+    "keep.project",
+    "tasks.project",
+    "tasks.pull"
+  ],
+  "notes": "Scaffold for Google-side mirror and projection jobs owned by uHOME-empire."
+}

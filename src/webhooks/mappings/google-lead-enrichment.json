@@ -1,0 +1,19 @@
+{
+  "label": "Google Lead Enrichment",
+  "source_system": "google",
+  "event_type": "place.enriched",
+  "target_scope": "local-master",
+  "target_entity": "contact",
+  "template_version": 1,
+  "field_map": {
+    "email": "email",
+    "name": "display_name",
+    "formatted_phone_number": "phone",
+    "website": "website",
+    "business_name": "organization"
+  },
+  "required_fields": [
+    "name"
+  ],
+  "notes": "Use for enrichment payloads that should merge place-derived lead data into local reviewable contacts."
+}

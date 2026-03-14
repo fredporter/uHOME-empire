@@ -1,0 +1,11 @@
+{
+  "service": "custom-api",
+  "transport": "http",
+  "auth": "bearer-token",
+  "base_url": "https://api.example.com",
+  "operations": [
+    "pull.records",
+    "push.records"
+  ],
+  "notes": "Template for new always-on API connections handled by uHOME-empire."
+}

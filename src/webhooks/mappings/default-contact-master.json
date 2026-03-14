@@ -1,0 +1,32 @@
+{
+  "label": "Default Contact Master",
+  "source_system": "import",
+  "event_type": "contact.imported",
+  "target_scope": "local-master",
+  "target_entity": "contact",
+  "template_version": 1,
+  "field_map": {
+    "prefix_salutation": "salutation",
+    "firstname": "given_name",
+    "lastname": "family_name",
+    "company": "organization",
+    "jobtitle": "job_title",
+    "email": "primary_email",
+    "phone": "phone",
+    "mobilephone": "mobile_phone",
+    "fax": "fax_number",
+    "website": "website_url",
+    "twitterhandle": "twitter_username",
+    "address": "street_address",
+    "city": "city",
+    "state": "state",
+    "zip": "postcode",
+    "country": "country"
+  },
+  "required_fields": [
+    "firstname",
+    "lastname",
+    "email"
+  ],
+  "notes": "Default mapping for imported contacts routed into the app-owned local contact base, aligned to HubSpot and standard iCloud contact fields."
+}

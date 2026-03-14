@@ -1,0 +1,26 @@
+{
+  "service": "binder-release-webhook",
+  "trigger": {
+    "mode": "cron",
+    "schedule": "0 */2 * * *"
+  },
+  "source_of_truth": "vault",
+  "inbound": {
+    "enabled": true,
+    "path": "/hooks/binder-release",
+    "verification": "shared-secret"
+  },
+  "outbound": {
+    "enabled": true,
+    "connection": "google-workspace",
+    "operation": "docs.mirror"
+  },
+  "auth": {
+    "secret_ref": "env:UHOME_EMPIRE_BINDER_RELEASE_SECRET"
+  },
+  "operations": [
+    "pull.remote-updates",
+    "push.vault-derived-records",
+    "emit.sync-status"
+  ]
+}
