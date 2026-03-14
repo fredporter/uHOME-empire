@@ -108,6 +108,8 @@ class ContractAssetTests(unittest.TestCase):
         brief = briefed["sync_execution_brief"][0]
         self.assertEqual(brief["channel"], "google-workspace-mirror")
         self.assertEqual(brief["recommended_action"], "queue_sync_assist")
+        self.assertEqual(brief["dispatch_version"], "v2.0.2")
+        self.assertTrue(str(brief["dispatch_id"]).startswith("dispatch:"))
         self.assertEqual(brief["dispatch_request"]["target"], "orchestration_dispatch")
         self.assertEqual(brief["dispatch_request"]["surface"], "sync")
 

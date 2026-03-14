@@ -207,6 +207,7 @@ def build_sync_execution_brief(plan: dict, probe_key: str = "transport_probe") -
             "channel": channel_name,
             "transport": transport,
             "recommended_action": recommended_action,
+            "dispatch_version": dispatch.get("dispatch_version", "unknown"),
             "provider": dispatch.get("provider", "unknown"),
             "executor": dispatch.get("executor", "unknown"),
             "status": dispatch.get("status", "unknown"),
@@ -216,10 +217,11 @@ def build_sync_execution_brief(plan: dict, probe_key: str = "transport_probe") -
         if recommended_action == "queue_sync_assist":
             brief["dispatch_request"] = {
                 "target": "orchestration_dispatch",
-                "task": channel_name,
-                "mode": dispatch.get("mode", "auto"),
-                "surface": dispatch.get("surface", "sync"),
+                "task": dispatch.get("request", {}).get("task", channel_name),
+                "mode": dispatch.get("request", {}).get("mode", "auto"),
+                "surface": dispatch.get("request", {}).get("surface", "sync"),
             }
+            brief["dispatch_id"] = dispatch.get("dispatch_id")
         briefs.append(brief)
 
     enriched = dict(plan)
