@@ -6,42 +6,26 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+import sys
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT / "src"))
 
-def load_json(path: Path) -> dict:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def build_sync_plan(repo_root: Path, channel_name: str | None = None) -> dict:
-    workflow = load_json(repo_root / "src" / "workflow-pattern.json")
-    sync_contract = load_json(repo_root / "src" / "sync-contract.json")
-
-    channels = sync_contract["channels"]
-    if channel_name is None:
-        selected = channels
-    else:
-        selected = [channel for channel in channels if channel["channel"] == channel_name]
-
-    return {
-        "version": sync_contract["version"],
-        "pattern": workflow["pattern"],
-        "mode": workflow["mode"],
-        "source_of_truth": sync_contract["source_of_truth"],
-        "channels": selected,
-        "capability_union": sorted(
-            {capability for channel in selected for capability in channel["capabilities"]}
-        ),
-    }
+from sync_adapter import attach_transport_targets, build_sync_plan, probe_transport_targets
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Render a uHOME-empire starter sync plan")
     parser.add_argument("--channel", help="Optional channel name")
+    parser.add_argument("--wizard-url", default="http://127.0.0.1:8787", help="uDOS-wizard base URL")
+    parser.add_argument("--probe", action="store_true", help="Probe transport targets")
     parser.add_argument("--json", action="store_true", help="Print JSON output")
     args = parser.parse_args()
 
-    repo_root = Path(__file__).resolve().parents[2]
-    plan = build_sync_plan(repo_root, channel_name=args.channel)
+    plan = build_sync_plan(REPO_ROOT, channel_name=args.channel)
+    plan = attach_transport_targets(plan, wizard_url=args.wizard_url)
+    if args.probe:
+        plan = probe_transport_targets(plan)
 
     if args.json:
         print(json.dumps(plan, indent=2))

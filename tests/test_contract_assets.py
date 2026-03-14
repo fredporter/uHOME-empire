@@ -1,12 +1,31 @@
 import json
 import unittest
 from pathlib import Path
+import sys
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+
+from sync_adapter import attach_transport_targets, build_sync_plan, probe_transport_targets
 
 
 class ContractAssetTests(unittest.TestCase):
+    def test_sync_adapter_attaches_transport_targets(self) -> None:
+        plan = build_sync_plan(REPO_ROOT, channel_name="google-workspace-mirror")
+        enriched = attach_transport_targets(plan, wizard_url="http://wizard.local")
+        targets = enriched["channels"][0]["transport_targets"]
+        target_names = [target["name"] for target in targets]
+        self.assertIn("orchestration_status", target_names)
+        self.assertIn("assist_route", target_names)
+
+    def test_sync_adapter_probes_transport_targets_with_stub_fetcher(self) -> None:
+        plan = build_sync_plan(REPO_ROOT, channel_name="webhook-automation")
+        enriched = attach_transport_targets(plan, wizard_url="http://wizard.local")
+        probed = probe_transport_targets(enriched, fetcher=lambda url: {"url": url, "ok": True})
+        self.assertEqual(len(probed["transport_probe"]), 1)
+        self.assertTrue(probed["transport_probe"][0]["ok"])
+
     def test_sync_contract_has_channels(self) -> None:
         path = REPO_ROOT / "src" / "sync-contract.json"
         payload = json.loads(path.read_text(encoding="utf-8"))

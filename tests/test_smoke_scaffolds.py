@@ -45,6 +45,7 @@ class SmokeScaffoldTests(unittest.TestCase):
         payload = json.loads(proc.stdout)
         self.assertEqual(payload["version"], "v2.0.1")
         self.assertIn("google-workspace-mirror", [channel["channel"] for channel in payload["channels"]])
+        self.assertIn("transport_targets", payload["channels"][0])
 
 
 if __name__ == "__main__":
