@@ -7,6 +7,14 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 class ContractAssetTests(unittest.TestCase):
+    def test_sync_contract_has_channels(self) -> None:
+        path = REPO_ROOT / "src" / "sync-contract.json"
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(payload["version"], "v2.0.1")
+        self.assertEqual(payload["source_of_truth"], "vault")
+        self.assertIsInstance(payload["channels"], list)
+        self.assertGreater(len(payload["channels"]), 0)
+
     def test_webhook_templates_have_expected_keys(self) -> None:
         targets = [
             REPO_ROOT / "src" / "webhooks" / "webhook-server-template.json",

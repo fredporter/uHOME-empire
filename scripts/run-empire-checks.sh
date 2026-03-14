@@ -33,6 +33,7 @@ require_file "$REPO_ROOT/src/webhooks/mappings/default-contact-master.json"
 require_file "$REPO_ROOT/src/webhooks/mappings/google-lead-enrichment.json"
 require_file "$REPO_ROOT/src/webhooks/mappings/calendar-followup-task.json"
 require_file "$REPO_ROOT/scripts/README.md"
+require_file "$REPO_ROOT/scripts/smoke/sync_plan.py"
 require_file "$REPO_ROOT/tests/README.md"
 require_file "$REPO_ROOT/config/README.md"
 require_file "$REPO_ROOT/examples/README.md"
@@ -130,5 +131,8 @@ if rg -n '/Users/fredbook/Code|~/Users/fredbook/Code' \
   echo "private local-root reference found in uHOME-empire" >&2
   exit 1
 fi
+
+python3 "$REPO_ROOT/scripts/smoke/sync_plan.py" --json >/dev/null
+python3 -m unittest discover -s tests -p 'test_*.py'
 
 echo "uHOME-empire checks passed"

@@ -33,6 +33,19 @@ class SmokeScaffoldTests(unittest.TestCase):
         self.assertIn("results", payload)
         self.assertIn("counts", payload)
 
+    def test_sync_plan_json_runs(self) -> None:
+        proc = subprocess.run(
+            [sys.executable, str(REPO_ROOT / "scripts" / "smoke" / "sync_plan.py"), "--json"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        payload = json.loads(proc.stdout)
+        self.assertEqual(payload["version"], "v2.0.1")
+        self.assertIn("google-workspace-mirror", [channel["channel"] for channel in payload["channels"]])
+
 
 if __name__ == "__main__":
     unittest.main()

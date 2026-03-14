@@ -5,6 +5,7 @@
 Current source surfaces include:
 
 - `workflow-pattern.json` as the smallest checked-in workflow contract
+- `sync-contract.json` as the starter sync-channel contract
 - `webhooks/` for configurable webhook and outbound API integration contracts
 
 Boundary rule:

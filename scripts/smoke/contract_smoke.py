@@ -10,6 +10,7 @@ from pathlib import Path
 def main() -> int:
     repo_root = Path(__file__).resolve().parents[2]
     targets = [
+        repo_root / "src" / "sync-contract.json",
         repo_root / "src" / "webhooks" / "webhook-server-template.json",
         repo_root / "src" / "webhooks" / "google-sync-template.json",
         repo_root / "src" / "webhooks" / "hubspot-sync-template.json",
