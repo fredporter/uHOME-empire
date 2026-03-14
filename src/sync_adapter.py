@@ -30,6 +30,17 @@ def load_runtime_services(repo_root: Path) -> tuple[dict, list[dict]]:
     return manifest, services
 
 
+def load_wizard_contract(repo_root: Path) -> dict:
+    contract_path = repo_root.parent / "uDOS-wizard" / "contracts" / "orchestration-contract.json"
+    return load_json(contract_path)
+
+
+def _wizard_contract_source_from_plan(plan: dict) -> Path:
+    runtime_source = Path(plan["runtime_service_source"]).resolve()
+    workspace_root = runtime_source.parents[2]
+    return workspace_root / "uDOS-wizard" / "contracts" / "orchestration-contract.json"
+
+
 def _usage_for_service(key: str) -> str:
     if key == "runtime.capability-registry":
         return "align sync-channel capabilities with shared platform ownership"
@@ -65,22 +76,25 @@ def build_sync_plan(repo_root: Path, channel_name: str | None = None) -> dict:
 
 
 def attach_transport_targets(plan: dict, wizard_url: str) -> dict:
+    contract_source = _wizard_contract_source_from_plan(plan)
+    contract = load_json(contract_source)
+    routes = contract["routes"]
     channels = []
     for channel in plan["channels"]:
         targets = []
         if channel["transport"] == "wizard-provider":
             task = quote(channel["channel"])
-            targets.append({"name": "orchestration_status", "url": f"{wizard_url}/orchestration/status"})
+            targets.append({"name": "orchestration_status", "url": f"{wizard_url}{routes['status']['path']}"})
             targets.append(
                 {
                     "name": "orchestration_dispatch",
-                    "url": f"{wizard_url}/orchestration/dispatch?task={task}&mode=auto&surface=sync",
+                    "url": f"{wizard_url}{routes['dispatch']['path']}?task={task}&mode=auto&surface=sync",
                 }
             )
             targets.append(
                 {
                     "name": "orchestration_workflow_plan",
-                    "url": f"{wizard_url}/orchestration/workflow-plan?objective=shared-remote-flow&mode=auto",
+                    "url": f"{wizard_url}{routes['workflow_plan']['path']}?objective=shared-remote-flow&mode=auto",
                 }
             )
         elif channel["transport"] == "webhook":
@@ -91,6 +105,7 @@ def attach_transport_targets(plan: dict, wizard_url: str) -> dict:
         channels.append(enriched_channel)
 
     enriched = dict(plan)
+    enriched["wizard_contract_source"] = str(contract_source)
     enriched["channels"] = channels
     return enriched
 
@@ -222,6 +237,7 @@ def build_sync_execution_brief(plan: dict, probe_key: str = "transport_probe") -
             "status": dispatch.get("status", "unknown"),
             "available_providers": providers,
             "runtime_services": sorted(runtime_services),
+            "wizard_contract_source": plan.get("wizard_contract_source"),
         }
         if recommended_action == "queue_sync_assist":
             brief["dispatch_request"] = {
@@ -231,6 +247,7 @@ def build_sync_execution_brief(plan: dict, probe_key: str = "transport_probe") -
                 "surface": dispatch.get("request", {}).get("surface", "sync"),
             }
             brief["dispatch_id"] = dispatch.get("dispatch_id")
+            brief["callback_contract"] = dispatch.get("callback_contract")
         briefs.append(brief)
 
     enriched = dict(plan)

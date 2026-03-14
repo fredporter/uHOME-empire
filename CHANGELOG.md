@@ -11,3 +11,4 @@ All notable changes to `uHOME-empire` should be documented in this file.
 - added a Round B sync execution brief built from live Wizard orchestration and assist probes
 - switched Round B sync execution to shared Wizard `/orchestration/dispatch`
 - aligned sync execution with the common Wizard dispatch contract
+- switched Wizard transport target loading to the packaged orchestration contract artifact

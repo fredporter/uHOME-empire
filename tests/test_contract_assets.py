@@ -31,6 +31,7 @@ class ContractAssetTests(unittest.TestCase):
         self.assertIn("orchestration_status", target_names)
         self.assertIn("orchestration_dispatch", target_names)
         self.assertIn("orchestration_workflow_plan", target_names)
+        self.assertTrue(enriched["wizard_contract_source"].endswith("uDOS-wizard/contracts/orchestration-contract.json"))
 
     def test_sync_adapter_probes_transport_targets_with_stub_fetcher(self) -> None:
         plan = build_sync_plan(REPO_ROOT, channel_name="webhook-automation")
@@ -115,6 +116,8 @@ class ContractAssetTests(unittest.TestCase):
         self.assertEqual(brief["workflow_step_count"], 2)
         self.assertEqual(brief["dispatch_request"]["target"], "orchestration_dispatch")
         self.assertEqual(brief["dispatch_request"]["surface"], "sync")
+        self.assertEqual(brief["callback_contract"]["route"], "/orchestration/callback")
+        self.assertTrue(brief["wizard_contract_source"].endswith("uDOS-wizard/contracts/orchestration-contract.json"))
 
 
 if __name__ == "__main__":
