@@ -11,6 +11,8 @@ Current source surfaces include:
   sync lane consumes during `v2.0.2`
 - product runtime-service metadata is loaded from
   `uDOS-core/contracts/runtime-services.json`
+- `sync_adapter.py` now also derives an execution brief from live Wizard
+  orchestration and assist probes
 - `webhooks/` for configurable webhook and outbound API integration contracts
 
 Boundary rule:

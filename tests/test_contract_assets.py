@@ -9,6 +9,7 @@ sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from sync_adapter import (
     attach_transport_targets,
+    build_sync_execution_brief,
     build_sync_plan,
     probe_local_wizard_app,
     probe_transport_targets,
@@ -36,12 +37,14 @@ class ContractAssetTests(unittest.TestCase):
         probed = probe_transport_targets(enriched, fetcher=lambda url: {"url": url, "ok": True})
         self.assertEqual(len(probed["transport_probe"]), 1)
         self.assertTrue(probed["transport_probe"][0]["ok"])
+        self.assertEqual(probed["transport_probe"][0]["keys"], ["local-contract"])
 
     def test_sync_adapter_probes_local_wizard_app(self) -> None:
         plan = build_sync_plan(REPO_ROOT, channel_name="google-workspace-mirror")
         enriched = attach_transport_targets(plan, wizard_url="http://127.0.0.1:8787")
         probed = probe_local_wizard_app(enriched, workspace_root=REPO_ROOT.parent)
         self.assertTrue(all(item["status_code"] == 200 for item in probed["local_transport_probe"]))
+        self.assertTrue(all("payload" in item for item in probed["local_transport_probe"]))
 
     def test_sync_contract_has_channels(self) -> None:
         path = REPO_ROOT / "src" / "sync-contract.json"
@@ -96,6 +99,16 @@ class ContractAssetTests(unittest.TestCase):
         self.assertEqual(plan["foundation_version"], "v2.0.1")
         self.assertTrue(plan["runtime_service_source"].endswith("uDOS-core/contracts/runtime-services.json"))
         self.assertGreaterEqual(len(plan["runtime_services"]), 2)
+
+    def test_sync_execution_brief_recommends_assist_queue(self) -> None:
+        plan = build_sync_plan(REPO_ROOT, channel_name="google-workspace-mirror")
+        enriched = attach_transport_targets(plan, wizard_url="http://127.0.0.1:8787")
+        probed = probe_local_wizard_app(enriched, workspace_root=REPO_ROOT.parent)
+        briefed = build_sync_execution_brief(probed, probe_key="local_transport_probe")
+        brief = briefed["sync_execution_brief"][0]
+        self.assertEqual(brief["channel"], "google-workspace-mirror")
+        self.assertEqual(brief["recommended_action"], "queue_sync_assist")
+        self.assertEqual(brief["dispatch_request"]["target"], "assist_route")
 
 
 if __name__ == "__main__":

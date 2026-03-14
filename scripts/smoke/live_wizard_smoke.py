@@ -69,6 +69,7 @@ def main() -> int:
                 str(repo_root / "scripts" / "smoke" / "sync_plan.py"),
                 "--json",
                 "--probe",
+                "--execution-brief",
                 "--wizard-url",
                 base_url,
             ],

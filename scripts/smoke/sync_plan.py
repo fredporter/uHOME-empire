@@ -13,6 +13,7 @@ sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from sync_adapter import (
     attach_transport_targets,
+    build_sync_execution_brief,
     build_sync_plan,
     probe_local_wizard_app,
     probe_transport_targets,
@@ -25,6 +26,7 @@ def main() -> int:
     parser.add_argument("--wizard-url", default="http://127.0.0.1:8787", help="uDOS-wizard base URL")
     parser.add_argument("--probe", action="store_true", help="Probe transport targets")
     parser.add_argument("--local-app", action="store_true", help="Probe an in-process sibling uDOS-wizard app")
+    parser.add_argument("--execution-brief", action="store_true", help="Build a sync execution brief from probe output")
     parser.add_argument("--json", action="store_true", help="Print JSON output")
     args = parser.parse_args()
 
@@ -34,6 +36,9 @@ def main() -> int:
         plan = probe_transport_targets(plan)
     if args.local_app:
         plan = probe_local_wizard_app(plan, workspace_root=REPO_ROOT.parent)
+    if args.execution_brief:
+        probe_key = "local_transport_probe" if args.local_app else "transport_probe"
+        plan = build_sync_execution_brief(plan, probe_key=probe_key)
 
     if args.json:
         print(json.dumps(plan, indent=2))
@@ -43,6 +48,9 @@ def main() -> int:
         print(f"source_of_truth={plan['source_of_truth']}")
         print(f"channels={','.join(channel['channel'] for channel in plan['channels'])}")
         print(f"capabilities={','.join(plan['capability_union'])}")
+        if "sync_execution_brief" in plan:
+            actions = ",".join(item["recommended_action"] for item in plan["sync_execution_brief"])
+            print(f"recommended_actions={actions}")
 
     return 0
 

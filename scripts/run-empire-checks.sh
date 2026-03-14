@@ -136,6 +136,7 @@ fi
 
 python3 "$REPO_ROOT/scripts/smoke/sync_plan.py" --json >/dev/null
 python3 "$REPO_ROOT/scripts/smoke/sync_plan.py" --json --local-app >/dev/null
+python3 "$REPO_ROOT/scripts/smoke/sync_plan.py" --json --local-app --execution-brief >/dev/null
 python3 -m unittest discover -s tests -p 'test_*.py'
 
 echo "uHOME-empire checks passed"

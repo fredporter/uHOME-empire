@@ -111,6 +111,7 @@ def probe_transport_targets(
                     "url": target["url"],
                     "ok": True,
                     "keys": sorted(payload.keys()),
+                    "payload": payload,
                 }
             )
 
@@ -156,9 +157,65 @@ def probe_local_wizard_app(plan: dict, workspace_root: Path) -> dict:
                     "path": path,
                     "status_code": response.status_code,
                     "keys": sorted(payload.keys()),
+                    "payload": payload,
                 }
             )
 
     probed = dict(plan)
     probed["local_transport_probe"] = results
     return probed
+
+
+def build_sync_execution_brief(plan: dict, probe_key: str = "transport_probe") -> dict:
+    probe_rows = plan.get(probe_key, [])
+    probe_map: dict[str, dict[str, dict]] = {}
+    for row in probe_rows:
+        probe_map.setdefault(row["channel"], {})[row["name"]] = row
+
+    briefs = []
+    for channel in plan["channels"]:
+        channel_name = channel["channel"]
+        channel_probes = probe_map.get(channel_name, {})
+        orchestration = channel_probes.get("orchestration_status", {}).get("payload", {})
+        assist = channel_probes.get("assist_route", {}).get("payload", {})
+        transport = channel["transport"]
+
+        if transport == "webhook":
+            briefs.append(
+                {
+                    "channel": channel_name,
+                    "transport": transport,
+                    "recommended_action": "review_contract_only",
+                    "executor": "local-contract",
+                    "status": "contract-only",
+                }
+            )
+            continue
+
+        providers = orchestration.get("providers", [])
+        runtime_services = {item["key"] for item in orchestration.get("runtime_services", [])}
+        recommended_action = "queue_sync_assist"
+        if assist.get("provider") == "local-fallback":
+            recommended_action = "fallback_local_review"
+
+        brief = {
+            "channel": channel_name,
+            "transport": transport,
+            "recommended_action": recommended_action,
+            "provider": assist.get("provider", "unknown"),
+            "executor": assist.get("executor", "unknown"),
+            "status": assist.get("status", "unknown"),
+            "available_providers": providers,
+            "runtime_services": sorted(runtime_services),
+        }
+        if recommended_action == "queue_sync_assist":
+            brief["dispatch_request"] = {
+                "target": "assist_route",
+                "task": channel_name,
+                "mode": assist.get("mode", "auto"),
+            }
+        briefs.append(brief)
+
+    enriched = dict(plan)
+    enriched["sync_execution_brief"] = briefs
+    return enriched

@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 EXPECTED_KEYS = {
-    "orchestration_status": {"mcp_bridge", "providers", "services", "version"},
+    "orchestration_status": {"mcp_bridge", "providers", "services", "version", "runtime_services"},
     "assist_route": {"executor", "mode", "provider", "status", "surface", "task", "transport"},
     "contract_only": {"local-contract"},
 }
@@ -49,6 +49,13 @@ def main() -> int:
 
     if seen != set(EXPECTED_KEYS):
         raise RuntimeError(f"probe coverage mismatch: expected {sorted(EXPECTED_KEYS)}, got {sorted(seen)}")
+
+    brief = payload.get("sync_execution_brief", [])
+    if not brief:
+        raise RuntimeError("expected non-empty sync_execution_brief")
+    actions = {item.get("recommended_action") for item in brief}
+    if "queue_sync_assist" not in actions:
+        raise RuntimeError("sync_execution_brief missing queue_sync_assist")
 
     print(json.dumps({"status": "PASS", "checked": sorted(seen)}, indent=2))
     return 0

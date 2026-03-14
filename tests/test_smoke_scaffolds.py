@@ -62,6 +62,19 @@ class SmokeScaffoldTests(unittest.TestCase):
         payload = json.loads(proc.stdout)
         self.assertIn("local_transport_probe", payload)
 
+    def test_sync_plan_execution_brief_runs(self) -> None:
+        proc = subprocess.run(
+            [sys.executable, str(REPO_ROOT / "scripts" / "smoke" / "sync_plan.py"), "--json", "--local-app", "--execution-brief"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        payload = json.loads(proc.stdout)
+        self.assertIn("sync_execution_brief", payload)
+        self.assertTrue(payload["sync_execution_brief"])
+
 
 if __name__ == "__main__":
     unittest.main()
