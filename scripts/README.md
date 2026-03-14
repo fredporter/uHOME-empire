@@ -5,7 +5,7 @@
 Current script surfaces include:
 
 - `run-empire-checks.sh` for repo activation validation
-- `smoke/` for future runtime-safe smoke and preflight scaffolds
+- `smoke/` for runtime-safe smoke and preflight scaffolds
 
 Boundary rule:
 
