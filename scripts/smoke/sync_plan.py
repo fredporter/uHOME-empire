@@ -11,7 +11,12 @@ import sys
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
-from sync_adapter import attach_transport_targets, build_sync_plan, probe_transport_targets
+from sync_adapter import (
+    attach_transport_targets,
+    build_sync_plan,
+    probe_local_wizard_app,
+    probe_transport_targets,
+)
 
 
 def main() -> int:
@@ -19,6 +24,7 @@ def main() -> int:
     parser.add_argument("--channel", help="Optional channel name")
     parser.add_argument("--wizard-url", default="http://127.0.0.1:8787", help="uDOS-wizard base URL")
     parser.add_argument("--probe", action="store_true", help="Probe transport targets")
+    parser.add_argument("--local-app", action="store_true", help="Probe an in-process sibling uDOS-wizard app")
     parser.add_argument("--json", action="store_true", help="Print JSON output")
     args = parser.parse_args()
 
@@ -26,6 +32,8 @@ def main() -> int:
     plan = attach_transport_targets(plan, wizard_url=args.wizard_url)
     if args.probe:
         plan = probe_transport_targets(plan)
+    if args.local_app:
+        plan = probe_local_wizard_app(plan, workspace_root=REPO_ROOT.parent)
 
     if args.json:
         print(json.dumps(plan, indent=2))

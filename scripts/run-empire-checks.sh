@@ -133,6 +133,7 @@ if rg -n '/Users/fredbook/Code|~/Users/fredbook/Code' \
 fi
 
 python3 "$REPO_ROOT/scripts/smoke/sync_plan.py" --json >/dev/null
+python3 "$REPO_ROOT/scripts/smoke/sync_plan.py" --json --local-app >/dev/null
 python3 -m unittest discover -s tests -p 'test_*.py'
 
 echo "uHOME-empire checks passed"

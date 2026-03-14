@@ -7,7 +7,12 @@ import sys
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
-from sync_adapter import attach_transport_targets, build_sync_plan, probe_transport_targets
+from sync_adapter import (
+    attach_transport_targets,
+    build_sync_plan,
+    probe_local_wizard_app,
+    probe_transport_targets,
+)
 
 
 class ContractAssetTests(unittest.TestCase):
@@ -25,6 +30,12 @@ class ContractAssetTests(unittest.TestCase):
         probed = probe_transport_targets(enriched, fetcher=lambda url: {"url": url, "ok": True})
         self.assertEqual(len(probed["transport_probe"]), 1)
         self.assertTrue(probed["transport_probe"][0]["ok"])
+
+    def test_sync_adapter_probes_local_wizard_app(self) -> None:
+        plan = build_sync_plan(REPO_ROOT, channel_name="google-workspace-mirror")
+        enriched = attach_transport_targets(plan, wizard_url="http://127.0.0.1:8787")
+        probed = probe_local_wizard_app(enriched, workspace_root=REPO_ROOT.parent)
+        self.assertTrue(all(item["status_code"] == 200 for item in probed["local_transport_probe"]))
 
     def test_sync_contract_has_channels(self) -> None:
         path = REPO_ROOT / "src" / "sync-contract.json"

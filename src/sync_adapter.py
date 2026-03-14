@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Callable
 from urllib.parse import quote
 from urllib.request import urlopen
+import sys
 
 
 def load_json(path: Path) -> dict:
@@ -91,3 +92,43 @@ def probe_transport_targets(
 def _default_fetcher(url: str) -> dict:
     with urlopen(url, timeout=2) as response:  # noqa: S310
         return json.loads(response.read().decode("utf-8"))
+
+
+def probe_local_wizard_app(plan: dict, workspace_root: Path) -> dict:
+    from fastapi.testclient import TestClient
+
+    wizard_repo = workspace_root / "uDOS-wizard"
+    sys.path.insert(0, str(wizard_repo))
+    from wizard.main import app  # type: ignore
+
+    client = TestClient(app)
+    results = []
+    for channel in plan["channels"]:
+        for target in channel.get("transport_targets", []):
+            if target["url"].startswith("local-contract:"):
+                results.append(
+                    {
+                        "channel": channel["channel"],
+                        "name": target["name"],
+                        "path": target["url"],
+                        "status_code": 200,
+                        "keys": ["local-contract"],
+                    }
+                )
+                continue
+            path = target["url"].replace("http://127.0.0.1:8787", "")
+            response = client.get(path)
+            payload = response.json()
+            results.append(
+                {
+                    "channel": channel["channel"],
+                    "name": target["name"],
+                    "path": path,
+                    "status_code": response.status_code,
+                    "keys": sorted(payload.keys()),
+                }
+            )
+
+    probed = dict(plan)
+    probed["local_transport_probe"] = results
+    return probed
