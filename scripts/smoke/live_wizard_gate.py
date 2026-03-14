@@ -12,6 +12,7 @@ from pathlib import Path
 EXPECTED_KEYS = {
     "orchestration_status": {"mcp_bridge", "providers", "services", "version", "runtime_services"},
     "orchestration_dispatch": {"executor", "mode", "provider", "status", "surface", "task", "transport"},
+    "orchestration_workflow_plan": {"mode", "objective", "owner", "plan_version", "step_count", "steps"},
     "contract_only": {"local-contract"},
 }
 

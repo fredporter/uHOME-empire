@@ -30,6 +30,7 @@ class ContractAssetTests(unittest.TestCase):
         target_names = [target["name"] for target in targets]
         self.assertIn("orchestration_status", target_names)
         self.assertIn("orchestration_dispatch", target_names)
+        self.assertIn("orchestration_workflow_plan", target_names)
 
     def test_sync_adapter_probes_transport_targets_with_stub_fetcher(self) -> None:
         plan = build_sync_plan(REPO_ROOT, channel_name="webhook-automation")
@@ -110,6 +111,8 @@ class ContractAssetTests(unittest.TestCase):
         self.assertEqual(brief["recommended_action"], "queue_sync_assist")
         self.assertEqual(brief["dispatch_version"], "v2.0.2")
         self.assertTrue(str(brief["dispatch_id"]).startswith("dispatch:"))
+        self.assertEqual(brief["workflow_plan_version"], "v2.0.2")
+        self.assertEqual(brief["workflow_step_count"], 2)
         self.assertEqual(brief["dispatch_request"]["target"], "orchestration_dispatch")
         self.assertEqual(brief["dispatch_request"]["surface"], "sync")
 

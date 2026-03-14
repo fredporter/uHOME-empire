@@ -77,6 +77,12 @@ def attach_transport_targets(plan: dict, wizard_url: str) -> dict:
                     "url": f"{wizard_url}/orchestration/dispatch?task={task}&mode=auto&surface=sync",
                 }
             )
+            targets.append(
+                {
+                    "name": "orchestration_workflow_plan",
+                    "url": f"{wizard_url}/orchestration/workflow-plan?objective=shared-remote-flow&mode=auto",
+                }
+            )
         elif channel["transport"] == "webhook":
             targets.append({"name": "contract_only", "url": "local-contract:webhook"})
 
@@ -183,6 +189,7 @@ def build_sync_execution_brief(plan: dict, probe_key: str = "transport_probe") -
         channel_probes = probe_map.get(channel_name, {})
         orchestration = channel_probes.get("orchestration_status", {}).get("payload", {})
         dispatch = channel_probes.get("orchestration_dispatch", {}).get("payload", {})
+        workflow_plan = channel_probes.get("orchestration_workflow_plan", {}).get("payload", {})
         transport = channel["transport"]
 
         if transport == "webhook":
@@ -208,6 +215,8 @@ def build_sync_execution_brief(plan: dict, probe_key: str = "transport_probe") -
             "transport": transport,
             "recommended_action": recommended_action,
             "dispatch_version": dispatch.get("dispatch_version", "unknown"),
+            "workflow_plan_version": workflow_plan.get("plan_version", "unknown"),
+            "workflow_step_count": workflow_plan.get("step_count", 0),
             "provider": dispatch.get("provider", "unknown"),
             "executor": dispatch.get("executor", "unknown"),
             "status": dispatch.get("status", "unknown"),
