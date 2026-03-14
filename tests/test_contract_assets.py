@@ -18,6 +18,10 @@ from sync_adapter import (
 class ContractAssetTests(unittest.TestCase):
     def test_sync_adapter_attaches_transport_targets(self) -> None:
         plan = build_sync_plan(REPO_ROOT, channel_name="google-workspace-mirror")
+        self.assertEqual(plan["version"], "v2.0.2")
+        self.assertEqual(plan["foundation_version"], "v2.0.1")
+        runtime_service_keys = {service["key"] for service in plan["runtime_services"]}
+        self.assertIn("runtime.capability-registry", runtime_service_keys)
         enriched = attach_transport_targets(plan, wizard_url="http://wizard.local")
         targets = enriched["channels"][0]["transport_targets"]
         target_names = [target["name"] for target in targets]
@@ -83,6 +87,12 @@ class ContractAssetTests(unittest.TestCase):
                 self.assertIsInstance(payload["field_map"], dict)
                 self.assertGreater(len(payload["field_map"]), 0)
                 self.assertIsInstance(payload["required_fields"], list)
+
+    def test_sync_plan_reports_runtime_services(self) -> None:
+        plan = build_sync_plan(REPO_ROOT, channel_name="hubspot-crm-sync")
+        self.assertEqual(plan["version"], "v2.0.2")
+        self.assertEqual(plan["foundation_version"], "v2.0.1")
+        self.assertGreaterEqual(len(plan["runtime_services"]), 2)
 
 
 if __name__ == "__main__":

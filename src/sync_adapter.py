@@ -22,8 +22,24 @@ def build_sync_plan(repo_root: Path, channel_name: str | None = None) -> dict:
     else:
         selected = [channel for channel in channels if channel["channel"] == channel_name]
 
+    runtime_services = [
+        {
+            "key": "runtime.capability-registry",
+            "owner": "uDOS-core",
+            "consumer": "uHOME-empire",
+            "usage": "align sync-channel capabilities with shared platform ownership",
+        },
+        {
+            "key": "runtime.release-lanes",
+            "owner": "uDOS-core",
+            "consumer": "uHOME-empire",
+            "usage": "track promotion-aware sync and orchestration routing",
+        },
+    ]
+
     return {
-        "version": sync_contract["version"],
+        "version": "v2.0.2",
+        "foundation_version": sync_contract["version"],
         "pattern": workflow["pattern"],
         "mode": workflow["mode"],
         "source_of_truth": sync_contract["source_of_truth"],
@@ -31,6 +47,7 @@ def build_sync_plan(repo_root: Path, channel_name: str | None = None) -> dict:
         "capability_union": sorted(
             {capability for channel in selected for capability in channel["capabilities"]}
         ),
+        "runtime_services": runtime_services,
     }
 
 

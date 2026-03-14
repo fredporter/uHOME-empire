@@ -7,6 +7,8 @@ Current source surfaces include:
 - `workflow-pattern.json` as the smallest checked-in workflow contract
 - `sync-contract.json` as the starter sync-channel contract
 - `sync_adapter.py` as the starter transport-target adapter
+- `sync_adapter.py` also reports the `uDOS-core` runtime-service contracts the
+  sync lane consumes during `v2.0.2`
 - `webhooks/` for configurable webhook and outbound API integration contracts
 
 Boundary rule:
