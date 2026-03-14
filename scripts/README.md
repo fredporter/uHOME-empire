@@ -6,6 +6,7 @@ Current script surfaces include:
 
 - `run-empire-checks.sh` for repo activation validation
 - `smoke/` for runtime-safe smoke and preflight scaffolds
+- `run-empire-wizard-release-gate.sh` for the hardened empire-to-wizard gate
 
 Boundary rule:
 
