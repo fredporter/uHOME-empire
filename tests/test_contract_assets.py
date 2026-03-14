@@ -20,8 +20,10 @@ class ContractAssetTests(unittest.TestCase):
         plan = build_sync_plan(REPO_ROOT, channel_name="google-workspace-mirror")
         self.assertEqual(plan["version"], "v2.0.2")
         self.assertEqual(plan["foundation_version"], "v2.0.1")
+        self.assertTrue(plan["runtime_service_source"].endswith("uDOS-core/contracts/runtime-services.json"))
         runtime_service_keys = {service["key"] for service in plan["runtime_services"]}
         self.assertIn("runtime.capability-registry", runtime_service_keys)
+        self.assertIn("runtime.release-lanes", runtime_service_keys)
         enriched = attach_transport_targets(plan, wizard_url="http://wizard.local")
         targets = enriched["channels"][0]["transport_targets"]
         target_names = [target["name"] for target in targets]
@@ -92,6 +94,7 @@ class ContractAssetTests(unittest.TestCase):
         plan = build_sync_plan(REPO_ROOT, channel_name="hubspot-crm-sync")
         self.assertEqual(plan["version"], "v2.0.2")
         self.assertEqual(plan["foundation_version"], "v2.0.1")
+        self.assertTrue(plan["runtime_service_source"].endswith("uDOS-core/contracts/runtime-services.json"))
         self.assertGreaterEqual(len(plan["runtime_services"]), 2)
 
 

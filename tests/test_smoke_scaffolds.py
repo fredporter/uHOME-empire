@@ -45,6 +45,7 @@ class SmokeScaffoldTests(unittest.TestCase):
         payload = json.loads(proc.stdout)
         self.assertEqual(payload["version"], "v2.0.2")
         self.assertEqual(payload["foundation_version"], "v2.0.1")
+        self.assertTrue(payload["runtime_service_source"].endswith("uDOS-core/contracts/runtime-services.json"))
         self.assertIn("runtime_services", payload)
         self.assertIn("google-workspace-mirror", [channel["channel"] for channel in payload["channels"]])
         self.assertIn("transport_targets", payload["channels"][0])

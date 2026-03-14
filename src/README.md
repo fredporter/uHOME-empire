@@ -9,6 +9,8 @@ Current source surfaces include:
 - `sync_adapter.py` as the starter transport-target adapter
 - `sync_adapter.py` also reports the `uDOS-core` runtime-service contracts the
   sync lane consumes during `v2.0.2`
+- product runtime-service metadata is loaded from
+  `uDOS-core/contracts/runtime-services.json`
 - `webhooks/` for configurable webhook and outbound API integration contracts
 
 Boundary rule:

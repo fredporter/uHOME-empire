@@ -12,9 +12,36 @@ def load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def load_runtime_services(repo_root: Path) -> tuple[dict, list[dict]]:
+    manifest_path = repo_root.parent / "uDOS-core" / "contracts" / "runtime-services.json"
+    manifest = load_json(manifest_path)
+    services = [
+        {
+            "key": service["key"],
+            "owner": service["owner"],
+            "route": service["route"],
+            "stability": service["stability"],
+            "consumer": "uHOME-empire",
+            "usage": _usage_for_service(service["key"]),
+        }
+        for service in manifest["services"]
+        if "uHOME-empire" in service.get("consumers", [])
+    ]
+    return manifest, services
+
+
+def _usage_for_service(key: str) -> str:
+    if key == "runtime.capability-registry":
+        return "align sync-channel capabilities with shared platform ownership"
+    if key == "runtime.release-lanes":
+        return "track promotion-aware sync and orchestration routing"
+    return "shared platform contract consumption"
+
+
 def build_sync_plan(repo_root: Path, channel_name: str | None = None) -> dict:
     workflow = load_json(repo_root / "src" / "workflow-pattern.json")
     sync_contract = load_json(repo_root / "src" / "sync-contract.json")
+    runtime_manifest, runtime_services = load_runtime_services(repo_root)
 
     channels = sync_contract["channels"]
     if channel_name is None:
@@ -22,24 +49,10 @@ def build_sync_plan(repo_root: Path, channel_name: str | None = None) -> dict:
     else:
         selected = [channel for channel in channels if channel["channel"] == channel_name]
 
-    runtime_services = [
-        {
-            "key": "runtime.capability-registry",
-            "owner": "uDOS-core",
-            "consumer": "uHOME-empire",
-            "usage": "align sync-channel capabilities with shared platform ownership",
-        },
-        {
-            "key": "runtime.release-lanes",
-            "owner": "uDOS-core",
-            "consumer": "uHOME-empire",
-            "usage": "track promotion-aware sync and orchestration routing",
-        },
-    ]
-
     return {
-        "version": "v2.0.2",
+        "version": runtime_manifest["version"],
         "foundation_version": sync_contract["version"],
+        "runtime_service_source": str(repo_root.parent / "uDOS-core" / "contracts" / "runtime-services.json"),
         "pattern": workflow["pattern"],
         "mode": workflow["mode"],
         "source_of_truth": sync_contract["source_of_truth"],
