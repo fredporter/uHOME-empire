@@ -1,49 +1,70 @@
-# uHOME-server Quickstart
+# uHOME-empire Quickstart
 
 ## Purpose
 
-This is the fastest path to understanding how `uHOME-empire` starter packs use
-`uHOME-server` as the local runtime host.
+This is the fastest path to validating `uHOME-empire` starter packs and sync
+plans against a local `uHOME-server` runtime and the current Wizard bridge.
+
+## Prerequisites
+
+- Python 3.9+
+- sibling `uHOME-server` repo for live or in-process runtime checks
+- sibling `uDOS-wizard` repo for live or in-process transport checks
 
 ## Suggested First Pass
 
-1. inspect the pack library
-2. render a preview
-3. emit a preview artifact
-4. dispatch a pack into the local `uHOME-server` seam
-5. inspect the resulting operator report
+1. validate the repo surfaces
+2. inspect the pack library
+3. preview the quickstart pack
+4. dispatch a pack into a live `uHOME-server` runtime
+5. probe the Wizard transport and `uHOME-server` automation bridge
 
-## Commands
+## 1. Validate The Repo
 
-List the current pack library:
+```bash
+bash scripts/run-empire-checks.sh
+```
+
+## 2. Inspect The Pack Library
 
 ```bash
 python3 scripts/smoke/pack_catalog.py --json
-```
-
-Write the default catalog artifact:
-
-```bash
 python3 scripts/smoke/pack_catalog.py --write-default-artifact
 ```
 
-Preview the `uHOME-server` quickstart pack:
+## 3. Preview The Quickstart Pack
 
 ```bash
 python3 scripts/smoke/pack_preview.py --json --pack quickstart --execution-brief
 python3 scripts/smoke/pack_preview.py --pack quickstart --write-default-artifact
 ```
 
-Run the quickstart pack through the local `uHOME-server` runtime seam:
+## 4. Dispatch Into A Live `uHOME-server`
+
+With `uHOME-server` already running on `127.0.0.1:8000`:
 
 ```bash
-python3 scripts/smoke/pack_run.py --json --pack quickstart --local-uhome-app --write-default-report
+python3 scripts/smoke/pack_run.py --json --pack quickstart --uhome-url http://127.0.0.1:8000 --write-default-report
+python3 scripts/smoke/pack_run.py --json --pack launcher-installer --uhome-url http://127.0.0.1:8000 --write-default-report
 ```
 
-Run the launcher or installer pack through the local `uHOME-server` automation seam:
+If you want to probe the sibling repo in-process instead of using live HTTP,
+swap `--uhome-url` for `--local-uhome-app`.
+
+## 5. Probe Wizard And Automation Bridge Paths
+
+With live Wizard and `uHOME-server` processes already running:
 
 ```bash
-python3 scripts/smoke/pack_run.py --json --pack launcher-installer --local-uhome-app --write-default-report
+python3 scripts/smoke/sync_plan.py --json --wizard-url http://127.0.0.1:8787 --probe --execution-brief
+python3 scripts/smoke/sync_plan.py --json --wizard-url http://127.0.0.1:8787 --handoff-url http://127.0.0.1:8000 --queue-automation-url http://127.0.0.1:8000 --process-automation-url http://127.0.0.1:8000 --fetch-automation-results-url http://127.0.0.1:8000
+```
+
+If you want the same checks against sibling repos in-process:
+
+```bash
+python3 scripts/smoke/sync_plan.py --json --local-app --execution-brief
+python3 scripts/smoke/sync_plan.py --json --local-uhome-automation-runtime
 ```
 
 ## Default Artifact Locations
