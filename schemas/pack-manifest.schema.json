@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://udos.family/uhome-empire/schemas/pack-manifest.schema.json",
+  "title": "uHOME-empire Pack Manifest",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "manifest_version",
+    "pack_id",
+    "label",
+    "category",
+    "summary",
+    "channels",
+    "inputs",
+    "outputs",
+    "approval_mode",
+    "dry_run_supported",
+    "runtime",
+    "assets"
+  ],
+  "properties": {
+    "manifest_version": {
+      "type": "string"
+    },
+    "pack_id": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "campaign",
+        "publishing",
+        "messaging",
+        "contacts",
+        "reporting",
+        "operations"
+      ]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "channels": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "inputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "required"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "description"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "approval_mode": {
+      "type": "string",
+      "enum": [
+        "manual-review",
+        "test-then-approve",
+        "trusted-auto"
+      ]
+    },
+    "dry_run_supported": {
+      "type": "boolean"
+    },
+    "runtime": {
+      "type": "object",
+      "required": [
+        "runtime_owner",
+        "execution_mode"
+      ],
+      "properties": {
+        "runtime_owner": {
+          "type": "string"
+        },
+        "execution_mode": {
+          "type": "string"
+        },
+        "container_jobs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "wizard_optional": {
+          "type": "boolean"
+        }
+      }
+    },
+    "assets": {
+      "type": "object",
+      "required": [
+        "templates",
+        "sample_data",
+        "docs"
+      ],
+      "properties": {
+        "templates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sample_data": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "docs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "provider_adapters": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "related_binders": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

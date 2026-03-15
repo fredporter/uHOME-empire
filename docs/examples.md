@@ -10,3 +10,4 @@ Useful examples:
 - provider-lane status and mapping patterns
 - cross-repo contract consumption
 - contributor onboarding walkthroughs
+- starter operational pack manifests in `packs/`

@@ -1,0 +1,11 @@
+{
+  "job_id": "hubspot-sync",
+  "service": "hubspot-sync",
+  "execution_mode": "remote-job",
+  "runtime_owner": "uHOME-server",
+  "trigger": "scheduled",
+  "transport": "wizard-provider",
+  "projection_targets": [
+    "hubspot-activity"
+  ]
+}

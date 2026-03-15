@@ -1,0 +1,79 @@
+{
+  "version": "v2.0.4",
+  "owner": "uHOME-empire",
+  "extends": "../uDOS-core/contracts/sync-record-contract.json",
+  "supported_record_types": [
+    "canonical_contact",
+    "activity",
+    "binder_project",
+    "sync_metadata"
+  ],
+  "contacts": {
+    "source_of_truth": "local-contact-authority",
+    "required_external_systems": [
+      "vault_contacts_db",
+      "local_network"
+    ],
+    "optional_external_systems": [
+      "apple_contacts",
+      "hubspot",
+      "google",
+      "manual"
+    ],
+    "identity_match_fields": [
+      "emails[].value",
+      "phones[].value",
+      "company",
+      "external_refs[].ref"
+    ]
+  },
+  "activities": {
+    "supported_kinds": [
+      "task",
+      "note",
+      "email",
+      "meeting",
+      "reminder",
+      "issue",
+      "event",
+      "webhook"
+    ],
+    "required_links": [
+      "binder_refs",
+      "contact_refs"
+    ]
+  },
+  "binder_projects": {
+    "routing_targets": [
+      "google-doc",
+      "google-task",
+      "google-drive-export",
+      "hubspot-activity",
+      "webhook"
+    ],
+    "required_tag_pattern": "^#(binder|project)/"
+  },
+  "sync_metadata": {
+    "source_systems": [
+      "vault",
+      "local_network",
+      "google",
+      "hubspot",
+      "webhook"
+    ],
+    "target_systems": [
+      "local_network",
+      "google",
+      "hubspot",
+      "webhook"
+    ],
+    "states": [
+      "pending",
+      "running",
+      "synced",
+      "conflict",
+      "error",
+      "skipped"
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "manifest_version": "v2.0.4",
+  "pack_id": "launcher-installer",
+  "label": "Launcher Installer",
+  "category": "operations",
+  "summary": "Starter rollout pack for reviewed launcher or installer preparation with webhook-routed follow-up.",
+  "channels": [
+    "web-publishing",
+    "webhook-automation"
+  ],
+  "inputs": [
+    {
+      "name": "release_name",
+      "type": "text",
+      "required": true,
+      "description": "Release or installer name."
+    },
+    {
+      "name": "release_checklist",
+      "type": "markdown",
+      "required": true,
+      "description": "Operator checklist for the rollout."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "launcher_preview",
+      "type": "preview-report",
+      "description": "Rendered launcher or installer rollout preview."
+    },
+    {
+      "name": "launcher_webhook_job",
+      "type": "automation-job",
+      "description": "Webhook-routed follow-up job for approved rollout work."
+    }
+  ],
+  "approval_mode": "manual-review",
+  "dry_run_supported": true,
+  "runtime": {
+    "runtime_owner": "uHOME-server",
+    "execution_mode": "local-runtime-with-webhook-handoff",
+    "container_jobs": [
+      "binder-release-webhook"
+    ],
+    "wizard_optional": true
+  },
+  "assets": {
+    "templates": [
+      "templates/launcher-checklist.md"
+    ],
+    "sample_data": [
+      "sample-data/preview-input.json"
+    ],
+    "docs": [
+      "README.md"
+    ]
+  },
+  "provider_adapters": [
+    "binder-release-webhook"
+  ],
+  "related_binders": [
+    "#binder/launcher-installer"
+  ]
+}

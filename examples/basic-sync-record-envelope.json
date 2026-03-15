@@ -1,0 +1,176 @@
+{
+  "contract_version": "v2.0.4",
+  "contacts": [
+    {
+      "contact_id": "contact:jane-smith",
+      "entity_type": "canonical_contact",
+      "display_name": "Jane Smith",
+      "given_name": "Jane",
+      "family_name": "Smith",
+      "role_title": "Director",
+      "company": "Acme Co",
+      "relationship": "client",
+      "notes": "Primary local-network contact record.",
+      "emails": [
+        {
+          "label": "work",
+          "value": "jane@example.com",
+          "primary": true
+        }
+      ],
+      "phones": [
+        {
+          "label": "mobile",
+          "value": "+61400000000",
+          "primary": true
+        }
+      ],
+      "addresses": [
+        {
+          "label": "work",
+          "city": "Brisbane",
+          "country": "Australia"
+        }
+      ],
+      "websites": [
+        {
+          "label": "company",
+          "value": "https://example.com",
+          "primary": true
+        }
+      ],
+      "social_profiles": [
+        {
+          "platform": "linkedin",
+          "handle": "jane-smith",
+          "url": "https://linkedin.com/in/jane-smith"
+        }
+      ],
+      "external_refs": [
+        {
+          "system": "vault_contacts_db",
+          "ref": "vault-contact-001",
+          "matched": true,
+          "merge_confidence": 1
+        },
+        {
+          "system": "hubspot",
+          "ref": "hubspot-contact-123",
+          "matched": true,
+          "merge_confidence": 0.92
+        }
+      ],
+      "source_provenance": [
+        {
+          "source": "vault",
+          "observed_at": "2026-03-15T00:00:00Z",
+          "note": "Local vault contact row."
+        }
+      ],
+      "first_seen_at": "2026-03-01T00:00:00Z",
+      "last_seen_at": "2026-03-15T00:00:00Z"
+    }
+  ],
+  "activities": [
+    {
+      "activity_id": "activity:followup-task",
+      "entity_type": "activity",
+      "activity_kind": "task",
+      "title": "Prepare follow-up note",
+      "body": "Summarize the meeting and route to CRM.",
+      "status": "open",
+      "occurred_at": "2026-03-15T00:00:00Z",
+      "due_at": "2026-03-16T00:00:00Z",
+      "completed_at": null,
+      "contact_refs": [
+        {
+          "kind": "contact",
+          "id": "contact:jane-smith"
+        }
+      ],
+      "company_refs": [
+        {
+          "kind": "company",
+          "id": "company:acme-co"
+        }
+      ],
+      "binder_refs": [
+        {
+          "kind": "binder",
+          "id": "binder:client-followup"
+        }
+      ],
+      "source_provenance": [
+        {
+          "source": "vault",
+          "observed_at": "2026-03-15T00:00:00Z"
+        }
+      ],
+      "sync": {
+        "state": "pending",
+        "last_attempt_at": "2026-03-15T00:00:00Z"
+      }
+    }
+  ],
+  "binders": [
+    {
+      "object_id": "binder:client-followup",
+      "entity_type": "binder_project",
+      "object_kind": "binder",
+      "canonical_tag": "#binder/client-followup",
+      "title": "Client Follow-up",
+      "summary": "Binder routing for CRM follow-up work.",
+      "status": "active",
+      "contact_refs": [
+        {
+          "kind": "contact",
+          "id": "contact:jane-smith"
+        }
+      ],
+      "company_refs": [
+        {
+          "kind": "company",
+          "id": "company:acme-co"
+        }
+      ],
+      "routing": {
+        "projection_targets": [
+          "hubspot-activity",
+          "google-doc"
+        ],
+        "automation_labels": [
+          "followup"
+        ]
+      },
+      "source_provenance": [
+        {
+          "source": "vault",
+          "observed_at": "2026-03-15T00:00:00Z"
+        }
+      ],
+      "sync": {
+        "state": "pending",
+        "last_attempt_at": "2026-03-15T00:00:00Z"
+      }
+    }
+  ],
+  "sync_metadata": [
+    {
+      "sync_id": "sync:followup-task-hubspot",
+      "entity_type": "sync_metadata",
+      "subject": {
+        "kind": "activity",
+        "id": "activity:followup-task"
+      },
+      "source_system": "vault",
+      "target_system": "hubspot",
+      "direction": "push",
+      "state": "pending",
+      "last_attempt_at": "2026-03-15T00:00:00Z",
+      "last_success_at": null,
+      "next_retry_at": null,
+      "error_code": null,
+      "error_message": null
+    }
+  ]
+}

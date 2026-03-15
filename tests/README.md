@@ -15,3 +15,4 @@ Phase 1 rule:
 - keep tests lightweight and public-contract-focused
 - keep private app and Apple-native behavior outside this repo
 - prefer contract, scaffold, and smoke-shape tests before provider-runtime tests
+- include pack-manifest and dry-run preview coverage for inspectable starter packs

@@ -1,0 +1,10 @@
+{
+  "event_id": "event:starter:community-open-studio",
+  "event_name": "Community Open Studio",
+  "event_date": "2026-04-18",
+  "event_location": "West End",
+  "channel_targets": [
+    "web-publishing",
+    "webhook-automation"
+  ]
+}

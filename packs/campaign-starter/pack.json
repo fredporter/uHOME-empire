@@ -1,0 +1,71 @@
+{
+  "manifest_version": "v2.0.4",
+  "pack_id": "campaign-starter",
+  "label": "Campaign Starter",
+  "category": "campaign",
+  "summary": "Starter campaign pack for audience selection, message preparation, and approval-gated outbound review.",
+  "channels": [
+    "email",
+    "hubspot-sync"
+  ],
+  "inputs": [
+    {
+      "name": "campaign_brief",
+      "type": "markdown",
+      "required": true,
+      "description": "Short campaign objective and approval context."
+    },
+    {
+      "name": "audience_segment",
+      "type": "segment-rule",
+      "required": true,
+      "description": "Inspectable audience-selection criteria."
+    },
+    {
+      "name": "message_template",
+      "type": "template-ref",
+      "required": true,
+      "description": "Email or outbound copy template."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "campaign_preview",
+      "type": "preview-report",
+      "description": "Dry-run preview of contacts, content, and touched systems."
+    },
+    {
+      "name": "crm_activity_package",
+      "type": "sync-package",
+      "description": "Channel-scoped package for CRM or activity handling."
+    }
+  ],
+  "approval_mode": "test-then-approve",
+  "dry_run_supported": true,
+  "runtime": {
+    "runtime_owner": "uHOME-server",
+    "execution_mode": "local-runtime-with-provider-handoff",
+    "container_jobs": [
+      "hubspot-sync"
+    ],
+    "wizard_optional": true
+  },
+  "assets": {
+    "templates": [
+      "templates/message-template.md"
+    ],
+    "sample_data": [
+      "sample-data/audience-segment.json",
+      "sample-data/preview-input.json"
+    ],
+    "docs": [
+      "README.md"
+    ]
+  },
+  "provider_adapters": [
+    "hubspot-sync"
+  ],
+  "related_binders": [
+    "#binder/campaign-starter"
+  ]
+}

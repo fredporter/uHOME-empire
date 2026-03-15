@@ -1,0 +1,9 @@
+{
+  "segment_id": "segment:starter:local-event-interest",
+  "label": "Local Event Interest",
+  "rules": [
+    "tag=event-interest",
+    "status=subscribed"
+  ],
+  "estimated_contacts": 24
+}

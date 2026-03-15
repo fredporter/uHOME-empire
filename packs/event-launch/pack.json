@@ -1,0 +1,71 @@
+{
+  "manifest_version": "v2.0.4",
+  "pack_id": "event-launch",
+  "label": "Event Launch",
+  "category": "publishing",
+  "summary": "Starter launch pack for preparing a public event page, outbound notifications, and webhook-routed follow-up actions.",
+  "channels": [
+    "web-publishing",
+    "webhook-automation"
+  ],
+  "inputs": [
+    {
+      "name": "event_brief",
+      "type": "markdown",
+      "required": true,
+      "description": "Event purpose, schedule, and publish context."
+    },
+    {
+      "name": "landing_page_content",
+      "type": "template-ref",
+      "required": true,
+      "description": "Reference to the page-template content."
+    },
+    {
+      "name": "release_binder",
+      "type": "binder-ref",
+      "required": true,
+      "description": "Binder anchor used for downstream workflow routing."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "publish_preview",
+      "type": "preview-report",
+      "description": "Diff-oriented preview of page content and targeted systems."
+    },
+    {
+      "name": "webhook_release_job",
+      "type": "automation-job",
+      "description": "Webhook-routed operational handoff for approved release follow-up."
+    }
+  ],
+  "approval_mode": "manual-review",
+  "dry_run_supported": true,
+  "runtime": {
+    "runtime_owner": "uHOME-server",
+    "execution_mode": "local-runtime-with-webhook-handoff",
+    "container_jobs": [
+      "binder-release-webhook"
+    ],
+    "wizard_optional": true
+  },
+  "assets": {
+    "templates": [
+      "templates/landing-page.md"
+    ],
+    "sample_data": [
+      "sample-data/event-brief.json",
+      "sample-data/preview-input.json"
+    ],
+    "docs": [
+      "README.md"
+    ]
+  },
+  "provider_adapters": [
+    "binder-release-webhook"
+  ],
+  "related_binders": [
+    "#binder/event-launch"
+  ]
+}

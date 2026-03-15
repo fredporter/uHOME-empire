@@ -17,11 +17,13 @@ Current direction:
 - Google Docs mirror sync
 - Google Keep projection or mirror import paths
 - Google Tasks projection and pull
+- channel-specific sync-package slicing for Google-targeted binder routes
 
 Status:
 
 - scaffolded contract lane
-- not yet a full live runtime
+- package, handoff, and automation-runtime probe ready
+- not yet a full live provider runtime
 
 Primary anchors:
 
@@ -36,11 +38,27 @@ Current direction:
 - task sync
 - note sync
 - webhook-driven updates
+- channel-specific sync-package slicing for HubSpot-targeted binder routes
 
 Status:
 
 - scaffolded contract lane
-- not yet a full live runtime
+- package, handoff, and automation-runtime probe ready
+- not yet a full live provider runtime
+
+### Webhook automation lane
+
+Current direction:
+
+- binder-triggered webhook package generation
+- queue and handoff path into the local-network ingest surface
+- empty-package validation when no webhook-routed records are present
+
+Status:
+
+- scaffolded contract lane
+- package, handoff, and automation-runtime probe ready
+- not yet a full live event runtime
 
 Primary anchors:
 
@@ -80,3 +98,4 @@ Current scaffold checks live under:
 
 - `scripts/smoke/integration_preflight.py`
 - `scripts/smoke/contract_smoke.py`
+- `scripts/smoke/sync_plan.py --local-uhome-automation-runtime`

@@ -42,6 +42,8 @@ def main() -> int:
     results.append(_check_file(repo_root / "src" / "webhooks" / "hubspot-sync-template.json"))
     results.append(_check_file(repo_root / "src" / "webhooks" / "mappings" / "default-contact-master.json"))
     results.append(_check_file(repo_root / "src" / "sync-contract.json"))
+    results.append(_check_file(repo_root / "src" / "sync-record-profile.json"))
+    results.append(_check_file(repo_root / "examples" / "basic-sync-record-envelope.json"))
     results.append(_check_env("UHOME_EMPIRE_WEBHOOK_SECRET"))
     results.append(_check_env("UHOME_EMPIRE_GOOGLE_CREDENTIALS"))
     results.append(_check_env("UHOME_EMPIRE_HUBSPOT_TOKEN"))

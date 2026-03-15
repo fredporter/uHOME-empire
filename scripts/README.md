@@ -6,6 +6,9 @@ Current script surfaces include:
 
 - `run-empire-checks.sh` for repo activation validation
 - `smoke/` for runtime-safe smoke and preflight scaffolds
+- `smoke/pack_catalog.py` for the starter pack library artifact
+- `smoke/pack_preview.py` for inspectable dry-run pack previews
+- `smoke/pack_run.py` for starter-pack dispatch into local or HTTP runtime seams
 - `run-empire-wizard-release-gate.sh` for the hardened empire-to-wizard gate
 
 Boundary rule:

@@ -1,0 +1,4 @@
+{
+  "release_name": "Launcher Installer v1",
+  "release_checklist": "- verify build hash\n- confirm landing page copy\n- queue webhook follow-up for rollout notes"
+}

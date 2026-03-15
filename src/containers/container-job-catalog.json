@@ -1,0 +1,22 @@
+{
+  "owner": "uHOME-empire",
+  "version": "v2.0.1",
+  "runtime_owner": "uHOME-server",
+  "jobs": [
+    {
+      "job_id": "google-workspace-sync",
+      "service": "google-workspace-mirror",
+      "definition": "google-workspace-sync-container.json"
+    },
+    {
+      "job_id": "hubspot-sync",
+      "service": "hubspot-sync",
+      "definition": "hubspot-sync-container.json"
+    },
+    {
+      "job_id": "binder-release-webhook",
+      "service": "binder-release-webhook",
+      "definition": "binder-release-webhook-container.json"
+    }
+  ]
+}

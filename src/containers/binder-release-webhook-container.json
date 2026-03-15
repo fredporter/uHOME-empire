@@ -1,0 +1,11 @@
+{
+  "job_id": "binder-release-webhook",
+  "service": "binder-release-webhook",
+  "execution_mode": "remote-job",
+  "runtime_owner": "uHOME-server",
+  "trigger": "event",
+  "transport": "webhook",
+  "projection_targets": [
+    "webhook"
+  ]
+}

@@ -1,0 +1,4 @@
+{
+  "import_batch_name": "March contacts import",
+  "cleanup_notes": "- normalize suburb casing\n- remove duplicate phone labels\n- hold ambiguous company matches for manual review"
+}

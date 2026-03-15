@@ -1,0 +1,13 @@
+{
+  "job_id": "google-workspace-sync",
+  "service": "google-workspace-mirror",
+  "execution_mode": "remote-job",
+  "runtime_owner": "uHOME-server",
+  "trigger": "scheduled",
+  "transport": "wizard-provider",
+  "projection_targets": [
+    "google-doc",
+    "google-task",
+    "google-drive-export"
+  ]
+}

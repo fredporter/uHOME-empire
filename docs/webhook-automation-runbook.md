@@ -31,6 +31,7 @@ Primary repo anchors:
 - `src/webhooks/connection-template.json`
 - `src/webhooks/google-sync-template.json`
 - `src/webhooks/hubspot-sync-template.json`
+- `src/containers/container-job-catalog.json`
 - `examples/configurable-webhook-server.json`
 - `scripts/smoke/integration_preflight.py`
 - `scripts/smoke/contract_smoke.py`
@@ -73,6 +74,40 @@ Use human review before:
 3. sync-status artifacts that are operator-readable
 4. provider adapters for Google and HubSpot
 5. reusable provider template for future APIs
+
+## Current Family Advancement
+
+The current family working-system pass now provides:
+
+- shared `automation-job` and `automation-result` contracts from `uDOS-core`
+- `uHOME-server` queue and result runtime surfaces
+- `uHOME-empire` sync-package export
+- `uHOME-empire` automation-job queue handoff
+- `uHOME-empire` automation-result recording for local end-to-end probes
+- `uHOME-empire` process-next and result-fetch runtime probes against `uHOME-server`
+
+This means the scaffold now covers the contract loop for:
+
+1. package generation
+2. automation job queueing
+3. automation job processing
+4. automation result fetch and summary
+
+Provider mutation remains scaffolded, but the automation contract path is no
+longer only documentation.
+
+## Current Local Runtime Probe
+
+The local sibling-app probe now exercises:
+
+1. queue lane-scoped automation jobs into `uHOME-server`
+2. call `/api/runtime/automation/process-next` once per queued job
+3. read `/api/runtime/automation/results`
+4. summarize statuses and channels for operator inspection
+
+Primary smoke entry:
+
+- `scripts/smoke/sync_plan.py --channel hubspot-sync --local-uhome-automation-runtime --json`
 
 ## Failure Handling
 
