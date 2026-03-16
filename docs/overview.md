@@ -71,6 +71,37 @@ Empire should work:
 - dry-run and approval-first operation
 - remixable examples for learning
 
+## UX Direction
+
+Empire should feel like an operations workshop or studio, not a monolithic
+enterprise dashboard. The operator should be able to see what will happen,
+which outputs will be created, and where approvals are required before live
+writes are allowed.
+
+## Safety And Approval Model
+
+Empire workflows should default to:
+
+- dry-run first
+- explicit approve-before-send for high-impact actions
+- clear failure policy per provider lane
+- auditable execution logs and result surfaces
+- rollback notes where reversible operations are possible
+
+## Channel Strategy
+
+Initial channel focus:
+
+- email
+- web publishing
+- exports and reporting
+
+Then expand toward:
+
+- CRM sync
+- webhook and automation lanes
+- headless or syndicated content pathways
+
 ## Related Docs
 
 - `docs/architecture.md`
