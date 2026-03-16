@@ -96,6 +96,13 @@ This means the scaffold now covers the contract loop for:
 Provider mutation remains scaffolded, but the automation contract path is no
 longer only documentation.
 
+HubSpot lane promotion note:
+
+- HubSpot now has an active lane gate for package, transport, and local
+  automation-runtime validation via `scripts/smoke/hubspot_lane_gate.py`
+- remote provider mutation remains approval-gated and secret-backed through
+  Wizard; this repo does not own credential storage
+
 ## Current Local Runtime Probe
 
 The local sibling-app probe now exercises:

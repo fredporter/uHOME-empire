@@ -23,6 +23,12 @@ operations-container repo that still stays modular, inspectable, and safe.
 - add reporting outputs
 - add approval workflow conventions
 
+Current traction inside Phase 2:
+
+- HubSpot lane is now marked active at the contract-plus-runtime-gate level
+  through `scripts/smoke/hubspot_lane_gate.py`
+- provider mutation remains approval-gated and secret-backed through Wizard
+
 ## Phase 3: Guided Make System
 
 - add editable pack builders

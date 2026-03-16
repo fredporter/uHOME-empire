@@ -4,6 +4,8 @@ set -eu
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+VENV_DIR="$REPO_ROOT/.venv"
+PYTHON_BIN="$VENV_DIR/bin/python"
 
 require_file() {
   if [ ! -f "$1" ]; then
@@ -13,6 +15,10 @@ require_file() {
 }
 
 cd "$REPO_ROOT"
+
+if [ ! -x "$PYTHON_BIN" ]; then
+    PYTHON_BIN="python3"
+fi
 
 require_file "$REPO_ROOT/README.md"
 require_file "$REPO_ROOT/docs/architecture.md"
@@ -65,6 +71,7 @@ require_file "$REPO_ROOT/scripts/smoke/sync_plan.py"
 require_file "$REPO_ROOT/scripts/smoke/pack_catalog.py"
 require_file "$REPO_ROOT/scripts/smoke/pack_preview.py"
 require_file "$REPO_ROOT/scripts/smoke/pack_run.py"
+require_file "$REPO_ROOT/scripts/smoke/hubspot_lane_gate.py"
 require_file "$REPO_ROOT/scripts/smoke/live_wizard_smoke.py"
 require_file "$REPO_ROOT/scripts/smoke/live_wizard_gate.py"
 require_file "$REPO_ROOT/tests/README.md"
@@ -74,7 +81,7 @@ require_file "$REPO_ROOT/examples/basic-empire-flow.json"
 require_file "$REPO_ROOT/examples/basic-sync-record-envelope.json"
 require_file "$REPO_ROOT/examples/configurable-webhook-server.json"
 
-python3 - <<'PY'
+"$PYTHON_BIN" - <<'PY'
 import json
 from pathlib import Path
 
@@ -260,15 +267,16 @@ else
     fi
 fi
 
-python3 "$REPO_ROOT/scripts/smoke/sync_plan.py" --json >/dev/null
-python3 "$REPO_ROOT/scripts/smoke/sync_plan.py" --json --local-app >/dev/null
-python3 "$REPO_ROOT/scripts/smoke/sync_plan.py" --json --local-app --execution-brief >/dev/null
-python3 "$REPO_ROOT/scripts/smoke/pack_catalog.py" --json >/dev/null
-python3 "$REPO_ROOT/scripts/smoke/pack_preview.py" --json >/dev/null
-python3 "$REPO_ROOT/scripts/smoke/pack_preview.py" --json --pack event-launch >/dev/null
-python3 "$REPO_ROOT/scripts/smoke/pack_preview.py" --json --pack event-launch --execution-brief >/dev/null
-python3 "$REPO_ROOT/scripts/smoke/pack_run.py" --json --pack campaign-starter --local-uhome-app >/dev/null
-python3 "$REPO_ROOT/scripts/smoke/pack_run.py" --json --pack event-launch --local-uhome-app >/dev/null
-python3 -m unittest discover -s tests -p 'test_*.py'
+"$PYTHON_BIN" "$REPO_ROOT/scripts/smoke/sync_plan.py" --json >/dev/null
+"$PYTHON_BIN" "$REPO_ROOT/scripts/smoke/sync_plan.py" --json --local-app >/dev/null
+"$PYTHON_BIN" "$REPO_ROOT/scripts/smoke/sync_plan.py" --json --local-app --execution-brief >/dev/null
+"$PYTHON_BIN" "$REPO_ROOT/scripts/smoke/pack_catalog.py" --json >/dev/null
+"$PYTHON_BIN" "$REPO_ROOT/scripts/smoke/pack_preview.py" --json >/dev/null
+"$PYTHON_BIN" "$REPO_ROOT/scripts/smoke/pack_preview.py" --json --pack event-launch >/dev/null
+"$PYTHON_BIN" "$REPO_ROOT/scripts/smoke/pack_preview.py" --json --pack event-launch --execution-brief >/dev/null
+"$PYTHON_BIN" "$REPO_ROOT/scripts/smoke/pack_run.py" --json --pack campaign-starter --local-uhome-app >/dev/null
+"$PYTHON_BIN" "$REPO_ROOT/scripts/smoke/pack_run.py" --json --pack event-launch --local-uhome-app >/dev/null
+"$PYTHON_BIN" "$REPO_ROOT/scripts/smoke/hubspot_lane_gate.py" --json >/dev/null
+"$PYTHON_BIN" -m unittest discover -s tests -p 'test_*.py'
 
 echo "uHOME-empire checks passed"

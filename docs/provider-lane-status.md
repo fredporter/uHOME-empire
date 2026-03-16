@@ -42,9 +42,13 @@ Current direction:
 
 Status:
 
-- scaffolded contract lane
-- package, handoff, and automation-runtime probe ready
-- not yet a full live provider runtime
+- active lane
+- package, handoff, and automation-runtime gate passing via `scripts/smoke/hubspot_lane_gate.py`
+- provider mutation remains approval-gated and secret-backed through Wizard routing
+
+Failure policy and review addendum:
+
+- `docs/hubspot-lane-failure-policy.md`
 
 ### Webhook automation lane
 
@@ -99,3 +103,4 @@ Current scaffold checks live under:
 - `scripts/smoke/integration_preflight.py`
 - `scripts/smoke/contract_smoke.py`
 - `scripts/smoke/sync_plan.py --local-uhome-automation-runtime`
+- `scripts/smoke/hubspot_lane_gate.py --json`

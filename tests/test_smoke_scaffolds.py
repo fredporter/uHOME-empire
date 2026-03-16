@@ -212,6 +212,23 @@ class SmokeScaffoldTests(unittest.TestCase):
         self.assertEqual(payload["local_automation_runtime"]["results_status_code"], 200)
         self.assertEqual(payload["automation_runtime_summary"]["counts_by_status"]["completed"], 1)
 
+    def test_hubspot_lane_gate_runs(self) -> None:
+        proc = subprocess.run(
+            [sys.executable, str(REPO_ROOT / "scripts" / "smoke" / "hubspot_lane_gate.py"), "--json"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        payload = json.loads(proc.stdout)
+        self.assertEqual(payload["status"], "PASS")
+        self.assertEqual(payload["lane"], "hubspot-sync")
+        self.assertEqual(payload["target_systems"], ["hubspot"])
+        self.assertEqual(payload["projection_targets"], ["hubspot-activity"])
+        self.assertEqual(payload["recommended_action"], "queue_sync_assist")
+        self.assertGreaterEqual(payload["automation_runtime_summary"]["counts_by_status"].get("completed", 0), 1)
+
 
 if __name__ == "__main__":
     unittest.main()

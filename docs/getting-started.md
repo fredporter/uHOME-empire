@@ -13,9 +13,11 @@
 11. Review `docs/webhook-automation-runbook.md` for the webhook and API lane.
 12. Review `docs/provider-lane-status.md` before treating a provider as live.
 13. Use `docs/provider-template-patterns.md` when adding payload mappings.
-14. Inspect `src/webhooks/` for the base webhook and API contract templates.
-15. Inspect `src/containers/` for the empire-owned job/container catalog.
-16. Start from `src/webhooks/connection-template.json` for new integrations.
-17. Put runnable demonstrations in `examples/`.
-18. Run `scripts/run-empire-checks.sh`.
-19. Add regression tests for any workflow contract.
+14. Read `docs/hubspot-lane-failure-policy.md` before changing HubSpot lane behavior.
+15. Inspect `src/webhooks/` for the base webhook and API contract templates.
+16. Inspect `src/containers/` for the empire-owned job/container catalog.
+17. Start from `src/webhooks/connection-template.json` for new integrations.
+18. Put runnable demonstrations in `examples/`.
+19. Run `scripts/run-empire-checks.sh`.
+20. Add regression tests for any workflow contract.
+21. Run `scripts/smoke/hubspot_lane_gate.py --json` when promoting HubSpot lane changes.

@@ -9,6 +9,7 @@ Current script surfaces include:
 - `smoke/pack_catalog.py` for the starter pack library artifact
 - `smoke/pack_preview.py` for inspectable dry-run pack previews
 - `smoke/pack_run.py` for starter-pack dispatch into local or HTTP runtime seams
+- `smoke/hubspot_lane_gate.py` for HubSpot lane promotion and runtime-gate validation
 - `run-empire-wizard-release-gate.sh` for the hardened empire-to-wizard gate
 
 Boundary rule:

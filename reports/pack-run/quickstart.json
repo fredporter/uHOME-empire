@@ -1,0 +1,48 @@
+{
+  "report_version": "v2.0.4",
+  "report_kind": "pack-run-report",
+  "pack_id": "quickstart",
+  "label": "uHOME-server Quickstart",
+  "category": "operations",
+  "dispatch_mode": "http",
+  "handoff_kind": "sync-package",
+  "preview_status": "ready",
+  "recommended_next_step": "approve_and_dispatch",
+  "operator_summary": {
+    "lane": "sync-package",
+    "status": "ingested",
+    "target": "http://127.0.0.1:8000/api/runtime/sync-records/ingest",
+    "ok": true
+  },
+  "raw": {
+    "pack_id": "quickstart",
+    "dispatch_mode": "http",
+    "handoff_kind": "sync-package",
+    "sync_handoff": {
+      "target": "http://127.0.0.1:8000/api/runtime/sync-records/ingest",
+      "package_version": "v2.0.4",
+      "record_counts": {
+        "contacts": 1,
+        "activities": 1,
+        "binders": 1,
+        "sync_metadata": 1
+      },
+      "response": {
+        "ok": true,
+        "ingested": {
+          "envelope_id": "sync-envelope:20260315T145554Z",
+          "path": "/Users/fredbook/Code/uHOME-server/memory/bank/uhome/sync-records/sync-envelope:20260315T145554Z.json",
+          "received_at": "2026-03-15T14:55:54Z",
+          "contract_version": "v2.0.4",
+          "counts": {
+            "contacts": 1,
+            "activities": 1,
+            "binders": 1,
+            "sync_metadata": 1
+          }
+        }
+      }
+    },
+    "report_output": "/Users/fredbook/Code/uHOME-empire/reports/pack-run/quickstart.json"
+  }
+}
