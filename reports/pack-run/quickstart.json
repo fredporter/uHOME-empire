@@ -31,7 +31,7 @@
         "ok": true,
         "ingested": {
           "envelope_id": "sync-envelope:20260315T145554Z",
-          "path": "/Users/fredbook/Code/uHOME-server/memory/bank/uhome/sync-records/sync-envelope:20260315T145554Z.json",
+          "path": "/Users/fredbook/Code/uDOS-family/uHOME-server/memory/bank/uhome/sync-records/sync-envelope:20260315T145554Z.json",
           "received_at": "2026-03-15T14:55:54Z",
           "contract_version": "v2.0.4",
           "counts": {
@@ -43,6 +43,6 @@
         }
       }
     },
-    "report_output": "/Users/fredbook/Code/uHOME-empire/reports/pack-run/quickstart.json"
+    "report_output": "/Users/fredbook/Code/uDOS-family/uHOME-empire/reports/pack-run/quickstart.json"
   }
 }
